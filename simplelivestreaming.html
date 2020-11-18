@@ -31,6 +31,7 @@
     <button id="mystop" class="btn btn-main" disabled>Stop</button>
   </div>
   <div id="wingright"></div>
+  
   <div id="wingleft"></div>
   <div id="mymain">
     <h2>시청</h2>
@@ -64,7 +65,7 @@
 
   const listener = {
     onCreate(chid) { console.log(`EVENT FIRED: onCreate: ${chid}`); $('#mystart').prop( "disabled", true ); $('#mystop').prop( "disabled", false ); },
-    onJoin(chid) { console.log(`EVENT FIRED: onJoin: ${chid}`); },
+    onJoin(chid) { console.log(`EVENT FIRED: onJoin: ${chid}`); $('#mystart').prop( "disabled", true ); $('#mystop').prop( "disabled", false ); },
     onClose() { 
       console.log('EVENT FIRED: onClose'); 
       $('#mystart').prop( "disabled", false ); 
