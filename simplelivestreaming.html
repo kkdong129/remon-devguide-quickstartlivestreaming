@@ -27,8 +27,8 @@
     <h2>방송</h2>
     <video id="localVideo" class="remote-video " autoplay muted></video>
     <br>
-    <button id="mystart" class="btn btn-main">Start</button>
-    <button id="mystop" class="btn btn-main" disabled>Stop</button>
+    <button id="mystart1" class="btn btn-main">Start</button>
+    <button id="mystop1" class="btn btn-main" disabled>Stop</button>
   </div>
   <div id="wingright"></div>
   
@@ -37,23 +37,34 @@
     <h2>시청</h2>
     <video id="remoteVideo" autoplay muted></video>
     <br>
-    <button id="mystart" class="btn btn-main">Start</button>
-    <button id="mystop" class="btn btn-main" disabled>Stop</button>
+    <button id="mystart2" class="btn btn-main">Start</button>
+    <button id="mystop2" class="btn btn-main" disabled>Stop</button>
   </div>
   <div id="wingright"></div>
 
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@remotemonster/sdk/remon.min.js"></script>
   <script>
-  let remon;
+  let remon1;
+  let remon2;
 
-  const config = {
+  const config1 = {
     credential: {
       serviceId: '551cf083-af04-4838-ab92-b150a06bd8cf',
       key: '6f33f3d46ef3ab9c504e6401cca14c6922a366d1ed013835b96c22f28dce1f29'
     },
     view: {
       local: '#localVideo',
+      remote: '#remoteVideo'
+    }
+  };
+
+    const config2 = {
+    credential: {
+      serviceId: '551cf083-af04-4838-ab92-b150a06bd8cf',
+      key: '6f33f3d46ef3ab9c504e6401cca14c6922a366d1ed013835b96c22f28dce1f29'
+    },
+    view: {
       remote: '#remoteVideo'
     },
     media: {
@@ -62,14 +73,14 @@
       video: false
     }
   };
-
-  const listener = {
-    onCreate(chid) { console.log(`EVENT FIRED: onCreate: ${chid}`); $('#mystart').prop( "disabled", true ); $('#mystop').prop( "disabled", false ); },
-    onJoin(chid) { console.log(`EVENT FIRED: onJoin: ${chid}`); $('#mystart').prop( "disabled", true ); $('#mystop').prop( "disabled", false ); },
+    
+  const listener1 = {
+    onCreate(chid) { console.log(`EVENT FIRED: onCreate: ${chid}`); $('#mystart').prop( "disabled", true ); $('#mystop1').prop( "disabled", false ); },
+    onJoin(chid) { console.log(`EVENT FIRED: onJoin: ${chid}`); },
     onClose() { 
       console.log('EVENT FIRED: onClose'); 
-      $('#mystart').prop( "disabled", false ); 
-      $('#mystop').prop( "disabled", true ); 
+      $('#mystart1').prop( "disabled", false ); 
+      $('#mystop1').prop( "disabled", true ); 
       remon.close();
       remon = new Remon({ config, listener });
     },
@@ -77,15 +88,38 @@
     onStat(result) { console.log(`EVENT FIRED: onStat: ${result}`); }
   };
 
-  remon = new Remon({ config, listener });
+  const listener2 = {
+    onCreate(chid) { console.log(`EVENT FIRED: onCreate: ${chid}`); },
+    onJoin(chid) { console.log(`EVENT FIRED: onJoin: ${chid}`); $('#mystart').prop( "disabled", true ); $('#mystop2').prop( "disabled", false ); },
+    onClose() { 
+      console.log('EVENT FIRED: onClose'); 
+      $('#mystart2').prop( "disabled", false ); 
+      $('#mystop2').prop( "disabled", true ); 
+      remon.close();
+      remon = new Remon({ config, listener });
+    },
+    onError(error) { console.log(`EVENT FIRED: onError: ${error}`); },
+    onStat(result) { console.log(`EVENT FIRED: onStat: ${result}`); }
+  };
+    
+  remon1 = new Remon({ config1, listener1 });
+  remon2 = new Remon({ config2, listener2 });
 
-  $('#mystop').click(function(){
-    remon.close();
+  $('#mystop1').click(function(){
+    remon1.close();
+  });
+    
+  $('#mystop2').click(function(){
+    remon2.close();
   });
 
-  $('#mystart').click(function(){
+  $('#mystart1').click(function(){
     // createCast의 인자는 방송채널의 ID입니다. 실제 서비스에서는 동일한 방송채널의 ID가 아닌, 고유하고 예측이 어려운 ID를 사용해야합니다.
-    remon.createCast("my-first-livestreaming");
+    remon1.createCast("my-first-livestreaming");
+  });
+    
+  $('#mystart2').click(function(){
+    remon2.joinCast("my-first-livestreaming");
   });
 
   </script>
