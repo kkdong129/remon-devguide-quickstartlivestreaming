@@ -82,7 +82,7 @@
       $('#mystart1').prop( "disabled", false ); 
       $('#mystop1').prop( "disabled", true ); 
       remon.close();
-      remon = new Remon({ config, listener });
+      remon = new Remon({ config1, listener1 });
     },
     onError(error) { console.log(`EVENT FIRED: onError: ${error}`); },
     onStat(result) { console.log(`EVENT FIRED: onStat: ${result}`); }
@@ -96,7 +96,7 @@
       $('#mystart2').prop( "disabled", false ); 
       $('#mystop2').prop( "disabled", true ); 
       remon.close();
-      remon = new Remon({ config, listener });
+      remon = new Remon({ config2, listener2 });
     },
     onError(error) { console.log(`EVENT FIRED: onError: ${error}`); },
     onStat(result) { console.log(`EVENT FIRED: onStat: ${result}`); }
